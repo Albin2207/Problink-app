@@ -1,5 +1,3 @@
-// lib/features/delivery/presentation/widgets/delivery_card.dart
-
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -14,7 +12,7 @@ class DeliveryCard extends StatelessWidget {
   final String status;
 
   const DeliveryCard({
-    Key? key,
+    super.key,
     required this.orderId,
     required this.customerName,
     required this.boxCount,
@@ -22,7 +20,25 @@ class DeliveryCard extends StatelessWidget {
     required this.dateTime,
     required this.payment,
     required this.status,
-  }) : super(key: key);
+  });
+
+  // Helper function to format address into 2 lines
+  String _formatAddress(String addr) {
+    // If address already has line break, return as is
+    if (addr.contains('\n')) return addr;
+    
+    // Split at common patterns (Blvd, Ave, St, Road, etc.)
+    final patterns = ['Blvd,', 'Ave,', 'St,', 'Street,', 'Road,', 'Dr,'];
+    
+    for (var pattern in patterns) {
+      if (addr.contains(pattern)) {
+        return addr.replaceFirst(pattern, '$pattern\n');
+      }
+    }
+    
+    // If no pattern found, just return as is (will wrap naturally)
+    return addr;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +61,7 @@ class DeliveryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order ID Section
+              // Order ID
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,13 +84,13 @@ class DeliveryCard extends StatelessWidget {
                 ],
               ),
               
-              // Customer Name Section
+              // Customer Name
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.person_outline,
                         size: 14,
                         color: AppColors.iconBlue,
@@ -103,15 +119,24 @@ class DeliveryCard extends StatelessWidget {
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           
-          // Box Count and Status Row
+          // Divider Line
+          Divider(
+            color: AppColors.borderGrey.withOpacity(0.3),
+            thickness: 1,
+            height: 1,
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Box Count and Status Badge Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.inventory_2_outlined,
                     size: 16,
                     color: AppColors.iconBlue,
@@ -127,20 +152,21 @@ class DeliveryCard extends StatelessWidget {
                   ),
                 ],
               ),
+              // Status Badge - "Out of delivery"
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.statusOutOfDelivery,
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.statusOutOfDelivery, // #16A24929 (16% opacity)
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   status,
                   style: const TextStyle(
                     fontSize: 11,
-                    color: AppColors.textPrimary,
+                    color: AppColors.statusTextGreen,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -150,11 +176,11 @@ class DeliveryCard extends StatelessWidget {
           
           const SizedBox(height: 12),
           
-          // Address
+          // Address (automatically formatted to 2 lines)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
+              const Icon(
                 Icons.location_on_outlined,
                 size: 16,
                 color: AppColors.iconBlue,
@@ -162,10 +188,10 @@ class DeliveryCard extends StatelessWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  address,
+                  _formatAddress(address), // Use helper function
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.textSecondary.withOpacity(0.8),
+                    color: AppColors.textPrimary,
                     height: 1.4,
                   ),
                 ),
@@ -179,7 +205,7 @@ class DeliveryCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                flex: 1,
+                
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

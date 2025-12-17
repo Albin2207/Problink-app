@@ -1,5 +1,3 @@
-// lib/widgets/common/bottom_nav_bar.dart
-
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
@@ -8,9 +6,9 @@ class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
 
   const CustomBottomNavBar({
-    Key? key,
+    super.key,
     required this.currentIndex,
-  }) : super(key: key);
+  });
 
   void _onItemTapped(BuildContext context, int index) {
     if (index == currentIndex) return;

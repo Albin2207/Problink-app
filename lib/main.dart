@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Delivery App',
+        title: 'Problink Infocare',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: AppColors.primaryBlue,

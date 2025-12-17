@@ -1,13 +1,13 @@
-// lib/features/dashboard/presentation/widgets/stats_card.dart
-
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/responsive.dart';
 
 class StatsCard extends StatelessWidget {
   final String title;
   final String value;
   final Color backgroundColor;
   final IconData icon;
+  final Color textColor;
 
   const StatsCard({
     super.key,
@@ -15,14 +15,21 @@ class StatsCard extends StatelessWidget {
     required this.value,
     required this.backgroundColor,
     required this.icon,
+    this.textColor = AppColors.textWhite, // Default to white
   });
 
   @override
   Widget build(BuildContext context) {
+    final cardHeight = Responsive.isMobile(context) ? 100.0 : 120.0;
+    final titleSize = Responsive.fontSize(context, 12);
+    final valueSize = Responsive.fontSize(context, 24);
+    final iconSize = Responsive.fontSize(context, 24);
+    final padding = Responsive.padding(context);
+    
     return Container(
       width: double.infinity,
-      height: 100,
-      padding: const EdgeInsets.all(20),
+      height: cardHeight,
+      padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
@@ -33,21 +40,22 @@ class StatsCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textWhite,
+                  style: TextStyle(
+                    fontSize: titleSize,
+                    color: textColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.spacing(context, 8)),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: AppColors.textWhite,
+                  style: TextStyle(
+                    fontSize: valueSize,
+                    color: textColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -55,15 +63,17 @@ class StatsCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(Responsive.spacing(context, 12)),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
+              color: textColor == AppColors.textWhite 
+                  ? Colors.white.withOpacity(0.3)
+                  : Colors.white.withOpacity(0.3), // White background for blue card
               shape: BoxShape.circle,
             ),
             child: Icon(
               icon,
-              color: AppColors.textWhite,
-              size: 24,
+              color: AppColors.textWhite, // Always white icon
+              size: iconSize,
             ),
           ),
         ],

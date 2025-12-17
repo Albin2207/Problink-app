@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkAuthAndNavigate() async {
-    // Wait a bit for splash screen to be visible (optional, for better UX)
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
@@ -39,43 +38,44 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.textPrimary,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // App Logo/Icon
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
+            // App Logo/Image
+            Image.asset(
+              'assets/images/splash_logo.png',
+              width: 240,
+              height: 260,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback to icon if image not found
+                return Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: const Icon(
-                Icons.local_shipping,
-                size: 60,
-                color: AppColors.primaryBlue,
-              ),
+                  child: const Icon(
+                    Icons.local_shipping,
+                    size: 60,
+                    color: AppColors.primaryBlue,
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 30),
             // App Name
-            const Text(
-              'Delivery App',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 50),
+
             // Loading Indicator
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -86,4 +86,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-

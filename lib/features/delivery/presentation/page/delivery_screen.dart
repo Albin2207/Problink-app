@@ -1,10 +1,9 @@
-// lib/features/delivery/presentation/pages/delivery_list_page.dart
-
 import 'package:delivery_app/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/utils/responsive.dart';
 import '../provider/delivery_provider.dart';
 import '../widgets/delivery_card.dart';
 
@@ -42,7 +41,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/dashboard');
           },
         ),
         title: const Text(
@@ -60,7 +59,12 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
           // Header Section
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.padding(context),
+              Responsive.spacing(context, 12),
+              Responsive.padding(context),
+              Responsive.padding(context),
+            ),
             child: Column(
               children: [
                 // Time and End Delivery Row
@@ -149,7 +153,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.backgroundColor,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: TextField(
                     controller: _searchController,
@@ -171,15 +175,15 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                         vertical: 10,
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide(
                           color: AppColors.primaryBlue.withOpacity(0.3),
                           width: 1,
@@ -243,7 +247,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(Responsive.padding(context)),
                   itemCount: deliveryProvider.deliveries.length,
                   itemBuilder: (context, index) {
                     final delivery = deliveryProvider.deliveries[index];
