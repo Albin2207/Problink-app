@@ -3,7 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../widgets/bottom_nav_bar.dart';
+import 'package:delivery_app/widgets/bottom_nav_bar.dart';
 import '../provider/qr_code_provider.dart';
 import '../widgets/permission_denied_view.dart';
 import '../widgets/scanned_result_view.dart';

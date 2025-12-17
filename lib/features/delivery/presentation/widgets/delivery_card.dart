@@ -159,8 +159,8 @@ class DeliveryCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.statusOutOfDelivery, // #16A24929 (16% opacity)
-                  borderRadius: BorderRadius.circular(4),
+                  color: AppColors.statusOutOfDelivery, 
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   status,
@@ -176,7 +176,7 @@ class DeliveryCard extends StatelessWidget {
           
           const SizedBox(height: 12),
           
-          // Address (automatically formatted to 2 lines)
+          // Address
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
