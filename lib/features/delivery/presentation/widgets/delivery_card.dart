@@ -27,18 +27,15 @@ class DeliveryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.borderGrey.withOpacity(0.3),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,28 +43,32 @@ class DeliveryCard extends StatelessWidget {
           // Order ID and Customer Name Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Order ID Section
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     AppStrings.orderId,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                      color: AppColors.textSecondary.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     orderId,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
                   ),
                 ],
               ),
+              
+              // Customer Name Section
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -75,15 +76,15 @@ class DeliveryCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.person_outline,
-                        size: 16,
+                        size: 14,
                         color: AppColors.iconBlue,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         AppStrings.customerName,
                         style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
+                          fontSize: 11,
+                          color: AppColors.textSecondary.withOpacity(0.7),
                         ),
                       ),
                     ],
@@ -92,7 +93,7 @@ class DeliveryCard extends StatelessWidget {
                   Text(
                     customerName,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
@@ -102,26 +103,30 @@ class DeliveryCard extends StatelessWidget {
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           
           // Box Count and Status Row
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                Icons.inventory_2_outlined,
-                size: 18,
-                color: AppColors.iconBlue,
+              Row(
+                children: [
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: 16,
+                    color: AppColors.iconBlue,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    boxCount,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 6),
-              Text(
-                boxCount,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -129,12 +134,12 @@ class DeliveryCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.statusOutOfDelivery,
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   status,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: AppColors.statusTextGreen,
                     fontWeight: FontWeight.w500,
                   ),
@@ -151,28 +156,30 @@ class DeliveryCard extends StatelessWidget {
             children: [
               Icon(
                 Icons.location_on_outlined,
-                size: 18,
+                size: 16,
                 color: AppColors.iconBlue,
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   address,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textSecondary,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary.withOpacity(0.8),
+                    height: 1.4,
                   ),
                 ),
               ),
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           
           // Date & Time and Payment Row
           Row(
             children: [
               Expanded(
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -180,14 +187,14 @@ class DeliveryCard extends StatelessWidget {
                       AppStrings.dateTime,
                       style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondary.withOpacity(0.7),
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       dateTime,
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 12,
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w500,
                       ),
@@ -195,26 +202,29 @@ class DeliveryCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.payment,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textSecondary,
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppStrings.payment,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textSecondary.withOpacity(0.7),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    payment,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(height: 4),
+                    Text(
+                      payment,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

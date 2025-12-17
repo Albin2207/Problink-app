@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../widgets/custom_button.dart';
+import '../provider/auth_provider.dart';
 
 class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({Key? key}) : super(key: key);
+  const OtpVerificationPage({super.key});
 
   @override
   State<OtpVerificationPage> createState() => _OtpVerificationPageState();
@@ -13,7 +15,6 @@ class OtpVerificationPage extends StatefulWidget {
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   final _otpController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -21,29 +22,57 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
     super.dispose();
   }
 
-  void _handleVerifyOtp() {
-    if (_otpController.text.length == 6) {
-      // TODO: Implement Firebase OTP verificflutter runation
-      setState(() => _isLoading = true);
-      
-      // Simulate API call
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() => _isLoading = false);
-        // Navigate to Dashboard
-        Navigator.pushReplacementNamed(context, '/dashboard');
-      });
-    } else {
+  Future<void> _handleVerifyOtp() async {
+    if (_otpController.text.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.enterOtp)),
+        const SnackBar(
+          content: Text(AppStrings.enterOtp),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.verifyOtp(_otpController.text);
+
+    if (success && mounted) {
+      // Navigate to Dashboard
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/dashboard',
+        (route) => false,
+      );
+    } else if (mounted && authProvider.errorMessage != null) {
+      // Show error snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authProvider.errorMessage!),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 
-  void _handleResendOtp() {
-    // TODO: Implement resend OTP logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('OTP sent successfully')),
-    );
+  Future<void> _handleResendOtp() async {
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.resendOtp();
+    
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('OTP sent successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (mounted && authProvider.errorMessage != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authProvider.errorMessage!),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -119,10 +148,14 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               const SizedBox(height: 24),
               
               // Verify Button
-              CustomButton(
-                text: AppStrings.verify,
-                onPressed: _handleVerifyOtp,
-                isLoading: _isLoading,
+              Consumer<AuthProvider>(
+                builder: (context, authProvider, _) {
+                  return CustomButton(
+                    text: AppStrings.verify,
+                    onPressed: _handleVerifyOtp,
+                    isLoading: authProvider.isLoading,
+                  );
+                },
               ),
               
               const SizedBox(height: 20),

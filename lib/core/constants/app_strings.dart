@@ -5,8 +5,8 @@ class AppStrings {
 
   // Login Screen
   static const String login = 'Login';
-  static const String letsStartWithEmail = "Let's start with your Email ID";
-  static const String enterEmailId = 'Enter your Email ID';
+  static const String letsStartWithMobile = "Let's start with your Mobile Number";
+  static const String enterMobileNumber = 'Enter your Mobile Number';
   static const String sendOtp = 'Send OTP';
   static const String byAcceptingPolicy = 'By continuing, you accept out Policy, Conditions.';
 
@@ -18,7 +18,7 @@ class AppStrings {
   static const String didNotReceiveOtp = "If your don't receive any OTP, Click ";
 
   // Dashboard
-  static const String dashboard = 'Dashboard';
+  static const String dashboard = 'DashBoard';
   static const String totalBoxesPending = 'Total Boxes Pending';
   static const String totalBoxesDelivered = 'Total Boxes Delivered';
   static const String totalDeliveryPending = 'Total Delivery Pending';
@@ -44,7 +44,7 @@ class AppStrings {
   static const String account = 'Account';
 
   // Validation Messages
-  static const String enterValidEmail = 'Please enter a valid email';
-  static const String enterValidPhone = 'Please enter a valid phone number';
+  static const String enterValidMobile = 'Please enter a valid mobile number';
   static const String enterOtp = 'Please enter OTP';
+  static const String mobileNumberLength = 'Mobile number must be 10 digits';
 }

@@ -8,9 +8,9 @@ class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
 
   const CustomBottomNavBar({
-    super.key,
+    Key? key,
     required this.currentIndex,
-  });
+  }) : super(key: key);
 
   void _onItemTapped(BuildContext context, int index) {
     if (index == currentIndex) return;
@@ -26,6 +26,12 @@ class CustomBottomNavBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/qr-scanner');
         break;
       case 3:
+        // Box Transfer page - not implemented
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Box Transfer page coming soon')),
+        );
+        break;
+      case 4:
         // Account page - not implemented
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account page coming soon')),
@@ -36,63 +42,93 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(
-                context,
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home,
-                label: AppStrings.home,
-                index: 0,
-              ),
-              _buildNavItem(
-                context,
-                icon: Icons.list_alt_outlined,
-                activeIcon: Icons.list_alt,
-                label: AppStrings.delivery,
-                index: 1,
-              ),
-              _buildNavItem(
-                context,
-                icon: Icons.qr_code_scanner,
-                activeIcon: Icons.qr_code_scanner,
-                label: AppStrings.boxTrf,
-                index: 2,
-                isCenter: true,
-              ),
-              _buildNavItem(
-                context,
-                icon: Icons.inventory_2_outlined,
-                activeIcon: Icons.inventory_2,
-                label: AppStrings.boxTrf,
-                index: 3,
-              ),
-              _buildNavItem(
-                context,
-                icon: Icons.person_outline,
-                activeIcon: Icons.person,
-                label: AppStrings.account,
-                index: 4,
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.bottomCenter,
+      children: [
+        // Bottom Navigation Bar
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
               ),
             ],
           ),
+          child: SafeArea(
+            child: Container(
+              height: 65,
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(
+                    context,
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home,
+                    label: AppStrings.home,
+                    index: 0,
+                  ),
+                  _buildNavItem(
+                    context,
+                    icon: Icons.list_alt_outlined,
+                    activeIcon: Icons.list_alt,
+                    label: AppStrings.delivery,
+                    index: 1,
+                  ),
+                  // Spacer for floating button
+                  const SizedBox(width: 60),
+                  _buildNavItem(
+                    context,
+                    icon: Icons.inventory_2_outlined,
+                    activeIcon: Icons.inventory_2,
+                    label: AppStrings.boxTrf,
+                    index: 3,
+                  ),
+                  _buildNavItem(
+                    context,
+                    icon: Icons.person_outline,
+                    activeIcon: Icons.person,
+                    label: AppStrings.account,
+                    index: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
+        
+        // Floating QR Scanner Button
+        Positioned(
+          bottom: 20,
+          child: GestureDetector(
+            onTap: () => _onItemTapped(context, 2),
+            child: Container(
+              width: 65,
+              height: 65,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryBlue.withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.qr_code_scanner,
+                color: Colors.white,
+                size: 32,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -102,54 +138,30 @@ class CustomBottomNavBar extends StatelessWidget {
     required IconData activeIcon,
     required String label,
     required int index,
-    bool isCenter = false,
   }) {
     final isActive = currentIndex == index;
 
-    return InkWell(
-      onTap: () => _onItemTapped(context, index),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isCenter && isActive
-              ? AppColors.primaryBlue
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
+    return Expanded(
+      child: InkWell(
+        onTap: () => _onItemTapped(context, index),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (isCenter)
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryBlue,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  isActive ? activeIcon : icon,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              )
-            else
-              Icon(
-                isActive ? activeIcon : icon,
+            Icon(
+              isActive ? activeIcon : icon,
+              color: isActive ? AppColors.primaryBlue : AppColors.iconGrey,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
                 color: isActive ? AppColors.primaryBlue : AppColors.iconGrey,
-                size: 24,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
               ),
-            if (!isCenter) ...[
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isActive ? AppColors.primaryBlue : AppColors.iconGrey,
-                  fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                ),
-              ),
-            ],
+            ),
           ],
         ),
       ),
