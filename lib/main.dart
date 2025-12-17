@@ -4,14 +4,15 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'core/constants/app_colors.dart';
 import 'core/di/service_locator.dart';
-import 'features/auth/presentation/pages/auth_wrapper.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/otp_verification_page.dart';
+import 'features/splash_screen.dart';
 import 'features/auth/presentation/provider/auth_provider.dart';
 import 'features/dashboard/presentation/page/dashboard_screen.dart';
 import 'features/delivery/presentation/page/delivery_screen.dart';
 import 'features/delivery/presentation/provider/delivery_provider.dart';
 import 'features/qrcode/presentation/page/qr_code_screen.dart';
+import 'features/qrcode/presentation/provider/qr_code_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => DeliveryProvider(serviceLocator.deliveryRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => QrCodeProvider(),
         ),
       ],
       child: MaterialApp(
@@ -55,7 +59,8 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const AuthWrapper(),
+          '/': (context) => const SplashScreen(),
+          '/login': (context) => const LoginPage(),
           '/otp': (context) => const OtpVerificationPage(),
           '/dashboard': (context) => const DashboardPage(),
           '/delivery-list': (context) => const DeliveryListPage(),

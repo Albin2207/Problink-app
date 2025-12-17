@@ -134,13 +134,13 @@ class DeliveryCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.statusOutOfDelivery,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   status,
                   style: const TextStyle(
                     fontSize: 11,
-                    color: AppColors.statusTextGreen,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -179,7 +179,7 @@ class DeliveryCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                flex: 3,
+                flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

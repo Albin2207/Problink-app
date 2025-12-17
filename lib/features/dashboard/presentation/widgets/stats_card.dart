@@ -10,17 +10,18 @@ class StatsCard extends StatelessWidget {
   final IconData icon;
 
   const StatsCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     required this.backgroundColor,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 100,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -36,7 +37,7 @@ class StatsCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: AppColors.textWhite,
                     fontWeight: FontWeight.w500,
                   ),
@@ -45,7 +46,7 @@ class StatsCard extends StatelessWidget {
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 24,
                     color: AppColors.textWhite,
                     fontWeight: FontWeight.bold,
                   ),
@@ -62,7 +63,7 @@ class StatsCard extends StatelessWidget {
             child: Icon(
               icon,
               color: AppColors.textWhite,
-              size: 28,
+              size: 24,
             ),
           ),
         ],

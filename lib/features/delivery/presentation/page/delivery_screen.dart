@@ -9,7 +9,7 @@ import '../provider/delivery_provider.dart';
 import '../widgets/delivery_card.dart';
 
 class DeliveryListPage extends StatefulWidget {
-  const DeliveryListPage({Key? key}) : super(key: key);
+  const DeliveryListPage({super.key});
 
   @override
   State<DeliveryListPage> createState() => _DeliveryListPageState();
@@ -21,7 +21,6 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch deliveries when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DeliveryProvider>().fetchDeliveries();
     });
@@ -41,8 +40,10 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary, size: 20),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           AppStrings.orders,
@@ -56,7 +57,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
       ),
       body: Column(
         children: [
-          // Header Section with Time and Search
+          // Header Section
           Container(
             color: Colors.white,
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -65,7 +66,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                 // Time and End Delivery Row
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.access_time,
                       size: 16,
                       color: AppColors.iconBlue,
@@ -80,7 +81,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Icon(
+                    const Icon(
                       Icons.timer_outlined,
                       size: 16,
                       color: AppColors.iconBlue,
@@ -95,35 +96,55 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                       ),
                     ),
                     const Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implement end delivery
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonBlue,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                    // End Delivery Button with Gradient & Stadium Border
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.gradientBlueStart,
+                            AppColors.gradientBlueEnd,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        elevation: 0,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      child: const Text(
-                        AppStrings.endDelivery,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                      child: SizedBox(
+                        height: 32, // Set your desired height here
+                        child: ElevatedButton(
+                          onPressed: () {
+                            //end delivery button logic
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 19,
+                              vertical:
+                                  0, // Set to 0 since SizedBox controls height
+                            ),
+                            shape: const StadiumBorder(),
+                            elevation: 0,
+                            minimumSize: Size
+                                .zero, // THIS IS KEY - removes minimum size constraint
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: const Text(
+                            AppStrings.endDelivery,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 197, 191, 191),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 12),
-                
+
                 // Search Bar
                 Container(
                   decoration: BoxDecoration(
@@ -138,7 +159,7 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                         color: AppColors.textSecondary.withOpacity(0.5),
                         fontSize: 14,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.search,
                         color: AppColors.iconGrey,
                         size: 20,
@@ -170,14 +191,16 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
               ],
             ),
           ),
-          
+
           // Delivery List
           Expanded(
             child: Consumer<DeliveryProvider>(
               builder: (context, deliveryProvider, child) {
                 if (deliveryProvider.isLoading) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryBlue,
+                    ),
                   );
                 }
 
@@ -188,13 +211,18 @@ class _DeliveryListPageState extends State<DeliveryListPage> {
                       children: [
                         Text(
                           'Error: ${deliveryProvider.errorMessage}',
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: () {
-                            deliveryProvider.fetchDeliveries();
-                          },
+                          onPressed: deliveryProvider.fetchDeliveries,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryBlue,
+                          ),
                           child: const Text('Retry'),
                         ),
                       ],

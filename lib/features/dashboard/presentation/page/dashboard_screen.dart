@@ -1,12 +1,11 @@
 import 'package:delivery_app/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../widgets/stats_card.dart';
 
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +17,7 @@ class DashboardPage extends StatelessWidget {
           style: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w600,
+            fontSize: 17,
           ),
         ),
         backgroundColor: Colors.white,
